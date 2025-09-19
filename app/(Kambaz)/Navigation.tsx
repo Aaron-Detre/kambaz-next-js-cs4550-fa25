@@ -2,9 +2,13 @@ import Link from "next/link";
 export default function CourseNavigation() {
   return (
     <div id="wd-course-navigation">
-      <a href="https://www.northeastern.edu/" id="wd-neu-link" target="_blank">
+      <Link
+        href="https://www.northeastern.edu/"
+        id="wd-neu-link"
+        target="_blank"
+      >
         Northeastern
-      </a>
+      </Link>
       <br />
       <Link href="/Account/Profile" id="wd-account-link">
         Account

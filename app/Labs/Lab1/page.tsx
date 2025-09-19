@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function Lab1() {
   return (
     <div id="wd-lab1">
@@ -14,12 +16,12 @@ export default function Lab1() {
         </li>
         <li>
           <b>GitHub Repo:</b>{" "}
-          <a
+          <Link
             href="https://github.com/Aaron-Detre/kambaz-next-js-cs4550-fa25"
             target="_blank"
           >
             Click Here
-          </a>
+          </Link>
         </li>
       </ul>
       <h3>HTML Examples</h3>
@@ -353,9 +355,9 @@ export default function Lab1() {
         </form>
         <h4>Anchor tag</h4>
         Please{" "}
-        <a href="https://www.lipsum.com" id="wd-lipsum">
+        <Link href="https://www.lipsum.com" id="wd-lipsum">
           click here
-        </a>{" "}
+        </Link>{" "}
         to get dummy text
         <br />
       </div>

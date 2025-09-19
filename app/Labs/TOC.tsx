@@ -3,7 +3,7 @@ export default function TOC() {
   return (
     <ul>
       <li>
-        <Link href="/Labs" id="wd-labs-link">
+        <Link href="/Labs/Home" id="wd-labs-link">
           Home
         </Link>
       </li>
@@ -19,11 +19,11 @@ export default function TOC() {
       </li>
       <li>
         <Link href="/Labs/Lab3" id="wd-lab3-link">
-          Lab 1
+          Lab 3
         </Link>
       </li>
       <li>
-        <Link href="/Kambaz" id="wd-kambaz-link">
+        <Link href="/Account/SignIn" id="wd-kambaz-link">
           Kambaz
         </Link>
       </li>

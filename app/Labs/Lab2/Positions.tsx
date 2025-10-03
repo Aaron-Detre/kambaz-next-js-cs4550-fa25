@@ -2,7 +2,7 @@ export default function Position() {
   return (
     <div>
       <div id="wd-css-position-relative">
-        <h2>Relative - don't affect others</h2>
+        <h2>Relative - don&apos;t affect others</h2>
         <div className="wd-bg-color-gray">
           <div
             className="wd-bg-color-yellow 
@@ -46,9 +46,9 @@ export default function Position() {
       </div>
       <div id="wd-css-position-fixed">
         <h2>Fixed position - viewport</h2>
-        Checkout the blue square that says "Fixed position" stuck all the way on
-        the right and half way down the page. It doesn't scroll with the rest of
-        the page. Its position is "Fixed".
+        Checkout the blue square that says &quot;Fixed position&quot; stuck all
+        the way on the right and half way down the page. It doesn&apos;t scroll
+        with the rest of the page. Its position is &quot;Fixed&quot;.
         <div
           className="wd-pos-fixed 
     wd-dimension-square wd-bg-color-blue 

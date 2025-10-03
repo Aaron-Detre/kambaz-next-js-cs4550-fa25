@@ -1,0 +1,96 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body * {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@media (min-width: 768px) {
+  #wd-kambaz .wd-main-content-offset {
+    padding-left: 140px !important;
+  }
+}
+
+.selected {
+  background-color: white;
+}
+
+.selected span {
+  color: red;
+}
+
+.selected > #wd-account-link {
+  color: black;
+}
+
+.selected > #wd-account-link > span {
+  color: black;
+}
+
+.unselected {
+  background-color: black;
+}
+
+.unselected span {
+  color: white;
+}
+
+.unselected > #wd-account-link {
+  color: white;
+}
+
+.list-group.wd > .list-group-item.active {
+  color: black;
+  background-color: white;
+  border-left: 3px solid black !important;
+}
+
+.btn-secondary {
+  --bs-btn-color: #000 !important;
+  --bs-btn-bg: #c7cdd1 !important;
+  --bs-btn-border-color: #c7cdd1 !important;
+  --bs-btn-hover-color: #fff !important;
+}
+.bg-secondary {
+  --bs-secondary-rgb: 199, 205, 209;
+}
+.list-group-item {
+  --bs-list-group-border-color: gray;
+}
+.wd-lesson {
+  border-left: 3px solid green !important;
+}
+/* 
+.wd-module {
+  border: 4px solid black;
+  border-top: 4px solid black;
+} */
+
+#wd-view-progress {
+  margin-right: 10px;
+}
+
+#wd-assignment-search {
+  width: 300px;
+}
+
+#wd-assignment-group-completion {
+  border: 1px solid gray;
+  border-radius: 30;
+  text-align: center;
+  padding: 5px 10px 5px 10px;
+}
+
+.wd-assignment-info {
+  font-size: medium;
+}
+
+.wd-flex-gap {
+  flex-grow: 1;
+}
+
+.wd-assignment-list-item {
+  border-left: 5px solid green;
+}

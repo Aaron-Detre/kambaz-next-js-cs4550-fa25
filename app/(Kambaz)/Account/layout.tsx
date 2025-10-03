@@ -1,3 +1,4 @@
+import { Col, Row } from "react-bootstrap";
 import AccountNavigation from "./Navigation";
 import { ReactNode } from "react";
 
@@ -5,15 +6,13 @@ export default function AccountLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <table>
-      <tbody>
-        <tr>
-          <td valign="top" width="100px">
-            <AccountNavigation />
-          </td>
-          <td valign="top">{children}</td>
-        </tr>
-      </tbody>
-    </table>
+    <Row>
+      <Col xl={1} md={2} xs={3}>
+        <AccountNavigation />
+      </Col>
+      <Col xl={11} md={10} xs={9}>
+        {children}
+      </Col>
+    </Row>
   );
 }

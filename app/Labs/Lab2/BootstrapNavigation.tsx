@@ -35,7 +35,7 @@ export default function BootstrapNavigation() {
       <div id="wd-css-navigating-with-cards">
         <h2> Cards </h2>
         <Card style={{ width: "18rem" }}>
-          <CardImg variant="top" src="images/NEU.png" />
+          <CardImg variant="top" src="/images/teslabot.jpg" />
           <CardBody>
             <CardTitle>Stacking Starship</CardTitle>
             <CardText>

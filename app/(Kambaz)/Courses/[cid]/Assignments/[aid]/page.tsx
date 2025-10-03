@@ -1,166 +1,186 @@
+import {
+  Card,
+  CardBody,
+  Col,
+  Form,
+  FormCheck,
+  FormControl,
+  FormLabel,
+  FormSelect,
+  Row,
+} from "react-bootstrap";
+
 export default function AssignmentEditor() {
   return (
     <div id="wd-assignments-editor">
-      <label htmlFor="wd-name">
-        <h3>Assignment Name</h3>
-      </label>
-      <br />
-      <input id="wd-name" value="A1 - ENV + HTML" />
-      <br />
-      <br />
-      <textarea id="wd-description" cols={50} rows={7}>
-        The assignment is available online Submit a link to the landing page of
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor
-      </textarea>
-      <br />
-      <br />
-      <table>
-        <tr>
-          <td align="right" valign="top">
-            <label htmlFor="wd-points">Points</label>
-          </td>
-          <td>
-            <input id="wd-points" type="number" defaultValue={100} />
-          </td>
-        </tr>
-        <br />
-        <tr>
-          <td align="right" valign="top">
-            <label htmlFor="wd-group">Assignment Group</label>
-          </td>
-          <td>
-            <select id="wd-group">
-              <option>Assignments</option>
-              <option>Projects</option>
-              <option>In-Class Activities</option>
-            </select>
-          </td>
-        </tr>
-        <br />
-        <tr>
-          <td align="right" valign="top">
-            <label htmlFor="wd-display-grade-as">Display Grade as</label>
-          </td>
-          <td>
-            <select id="wd-display-grade-as">
-              <option>Percentage</option>
-              <option>Decimal</option>
-              <option>Letter</option>
-            </select>
-          </td>
-        </tr>
-        <br />
-        <tr>
-          <td align="right" valign="top">
-            <label htmlFor="wd-submission-type">Submission Type</label>
-          </td>
-          <td>
-            <select id="wd-submission-type">
-              <option>Online</option>
-              <option>In Person</option>
-            </select>
-            <br />
-            <br />
-            <div id="wd-online-entry-options">
-              <span>Online Entry Options</span>
-              <br />
-              <input
-                type="checkbox"
-                name="check-online-entry-option"
-                id="wd-text-entry"
-              />
-              <label htmlFor="wd-text-entry">Text Entry</label>
-              <br />
-              <input
-                type="checkbox"
-                name="check-online-entry-option"
-                id="wd-website-url"
-              />
-              <label htmlFor="wd-website-url">Website URL</label>
-              <br />
-              <input
-                type="checkbox"
-                name="check-online-entry-option"
-                id="wd-media-recordings"
-              />
-              <label htmlFor="wd-media-recordings">Media Recordings</label>
-              <br />
-              <input
-                type="checkbox"
-                name="check-online-entry-option"
-                id="wd-student-annotation"
-              />
-              <label htmlFor="wd-student-annotation">Student Annotation</label>
-              <br />
-              <input
-                type="checkbox"
-                name="check-online-entry-option"
-                id="wd-file-upload"
-              />
-              <label htmlFor="wd-file-upload">File Uploads</label>
-              <br />
-            </div>
-          </td>
-        </tr>
-        <br />
-        <tr>
-          <td align="right" valign="top">
-            <label htmlFor="wd-assign-to">Assign to</label>
-          </td>
-          <td>
-            <input id="wd-assign-to" type="text" defaultValue="Everyone" />
-          </td>
-        </tr>
-        <br />
-        <tr>
-          <td align="right" valign="top">
-            <label htmlFor="wd-due-date">Due</label>
-          </td>
-          <td>
-            <input id="wd-due-date" type="date" defaultValue="2025-01-01" />
-          </td>
-        </tr>
-        <br />
-        <tr>
-          <td align="right" valign="top">
-            <label>Available</label>
-          </td>
-          <td>
-            <table>
-              <tr>
-                <td>
-                  <label htmlFor="wd-available-from">From</label>
-                </td>
-                <td>
-                  <label htmlFor="wd-available-until">Until</label>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input
-                    id="wd-available-from"
-                    type="date"
-                    defaultValue="2025-01-01"
-                  />
-                </td>
-                <td>
-                  <input
-                    id="wd-available-until"
-                    type="date"
-                    defaultValue="2025-12-31"
-                  />
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-      <hr />
-      <button>Cancel</button>
-      <button>Save</button>
+      <Form>
+        <FormLabel>Assignment Name</FormLabel>
+        <FormControl type="text" defaultValue={"A1"} />
+        <FormControl
+          className="mt-4"
+          as="textarea"
+          rows={8}
+          defaultValue={`The assignment is available online Submit a link to the landing page
+\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+aliquip ex ea commodo consequat. Duis aute irure dolor`}
+        />
+        <Row className="mt-5">
+          <Col
+            md={2}
+            className="d-md-flex justify-content-end align-items-center"
+          >
+            <FormLabel>Points</FormLabel>
+          </Col>
+          <Col md={10}>
+            <FormControl type="text" defaultValue={100} />
+          </Col>
+        </Row>
+        <Row className="mt-4">
+          <Col
+            md={2}
+            className="d-md-flex justify-content-end align-items-center"
+          >
+            <FormLabel>Assignment Group</FormLabel>
+          </Col>
+          <Col md={10}>
+            <FormSelect>
+              <option value="assignments" defaultChecked>
+                ASSIGNMENTS
+              </option>
+              <option value="projects" defaultChecked>
+                PROJECTS
+              </option>
+              <option value="activities" defaultChecked>
+                IN-CLASS ACTIVITIES
+              </option>
+            </FormSelect>
+          </Col>
+        </Row>
+        <Row className="mt-4">
+          <Col
+            md={2}
+            className="d-md-flex justify-content-end align-items-center"
+          >
+            <FormLabel>Display Grade as</FormLabel>
+          </Col>
+          <Col md={10}>
+            <FormSelect>
+              <option value="percentage" defaultChecked>
+                Percentage
+              </option>
+              <option value="decimal" defaultChecked>
+                Decimal
+              </option>
+              <option value="letter" defaultChecked>
+                Letter
+              </option>
+            </FormSelect>
+          </Col>
+        </Row>
+        <Row className="mt-4">
+          <Col
+            md={2}
+            className="d-md-flex justify-content-end align-items-start"
+          >
+            <FormLabel>Submission Type</FormLabel>
+          </Col>
+          <Col md={10}>
+            <Card>
+              <CardBody>
+                <FormSelect className="m-1">
+                  <option value="online" defaultChecked>
+                    Online
+                  </option>
+                  <option value="in-person">In-person</option>
+                </FormSelect>
+                <FormLabel className="mt-2">
+                  <b>Online Entry Options</b>
+                </FormLabel>
+                <FormCheck
+                  type="checkbox"
+                  name="online-entry-options"
+                  label="Text Entry"
+                  className="mt-1"
+                />
+                <FormCheck
+                  type="checkbox"
+                  name="online-entry-options"
+                  label="Website URL"
+                  className="mt-3"
+                />
+                <FormCheck
+                  type="checkbox"
+                  name="online-entry-options"
+                  label="Media Recording"
+                  className="mt-3"
+                />
+                <FormCheck
+                  type="checkbox"
+                  name="online-entry-options"
+                  label="Student Annotation"
+                  className="mt-3"
+                />
+                <FormCheck
+                  type="checkbox"
+                  name="online-entry-options"
+                  label="File Upload"
+                  className="mt-3"
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row className="mt-4">
+          <Col
+            md={2}
+            className="d-md-flex justify-content-end align-items-start"
+          >
+            <FormLabel>Assign</FormLabel>
+          </Col>
+          <Col md={10}>
+            <Card>
+              <CardBody>
+                <Row>
+                  <Col lg={2} xl={1}>
+                    <FormLabel>
+                      <b>Assign to</b>
+                    </FormLabel>
+                  </Col>
+                  <Col lg={10} xl={11}>
+                    <FormControl type="text" defaultValue={"Everyone"} />
+                  </Col>
+                </Row>
+                <Row className="mt-4">
+                  <Col lg={2} xl={1}>
+                    <FormLabel>
+                      <b>Due</b>
+                    </FormLabel>
+                  </Col>
+                  <Col lg={10} xl={11}>
+                    <FormControl type="date" defaultValue={"2024-04-13"} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={6} className="mt-4">
+                    <FormLabel>
+                      <b>Available from</b>
+                    </FormLabel>
+                    <FormControl type="date" defaultValue={"2024-04-06"} />
+                  </Col>
+                  <Col lg={6} className="mt-4">
+                    <FormLabel>
+                      <b>Until</b>
+                    </FormLabel>
+                    <FormControl type="date" />
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Form>
     </div>
   );
 }

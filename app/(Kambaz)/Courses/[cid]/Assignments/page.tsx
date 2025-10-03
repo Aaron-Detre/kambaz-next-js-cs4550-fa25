@@ -1,61 +1,105 @@
 import Link from "next/link";
+import AssignmentControls from "./AssignmentControls";
+import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
+import { BsGripVertical } from "react-icons/bs";
+import AssignmentsGroupControlButtons from "./AssignmentsGroupControlButtons";
+import AssignmentControlButtons from "./AssignmentControlButtons";
+import { LuNotebookPen } from "react-icons/lu";
 
 export default function Assignments() {
   return (
-    <div id="wd-assignments">
-      <input placeholder="Search for Assignments" id="wd-search-assignment" />
-      <button id="wd-add-assignment-group">+ Group</button>
-      <button id="wd-add-assignment">+ Assignment</button>
-      <h3 id="wd-assignments-title">
-        ASSIGNMENTS 30% of Total <button>+</button>
-      </h3>
-      <ul id="wd-assignment-list">
-        <li className="wd-assignment-list-item">
-          <Link
-            href="/Courses/1234/Assignments/123"
-            className="wd-assignment-link"
-          >
-            A1 - ENV + HTML
-          </Link>
-          <p className="wd-assignment-info">
-            Multiple Modules | <b>Not available until</b> May 6 at 12:00am |
-            <b>Due</b> May 13 at 11:59pm | 100 pts
-          </p>
-        </li>
-        <li className="wd-assignment-list-item">
-          <Link
-            href="/Courses/1234/Assignments/822"
-            className="wd-assignment-link"
-          >
-            A2 - CSS + BOOTSTRAP
-          </Link>
-          <p className="wd-assignment-info">
-            Multiple Modules | <b>Not available until</b> May 13 at 12:00am |
-            <b>Due</b> May 20 at 11:59pm | 100 pts
-          </p>
-        </li>
-        <li className="wd-assignment-list-item">
-          <Link
-            href="/Courses/1234/Assignments/791"
-            className="wd-assignment-link"
-          >
-            A3 - JAVASCRIPT + REACT
-          </Link>
-          <p className="wd-assignment-info">
-            Multiple Modules | <b>Not available until</b> May 20 at 12:00am |
-            <b>Due</b> May 27 at 11:59pm | 100 pts
-          </p>
-        </li>
-      </ul>
-      <h3 id="wd-quizzes-title">
-        QUIZZES 10% of Total <button>+</button>
-      </h3>
-      <h3 id="wd-exams-title">
-        EXAMS 30% of Total <button>+</button>
-      </h3>
-      <h3 id="wd-projects-title">
-        PROJECTS 30% of Total <button>+</button>
-      </h3>
+    <div id="wd-assignments-page">
+      <AssignmentControls />
+      <ListGroup className="rounded-0 mt-5" id="wd-assignment-list">
+        <ListGroupItem className="wd-assignment-list-header p-0 mb-5 fs-5 border-gray">
+          <div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">
+            <BsGripVertical className="me-2 fs-3" /> Assignments
+            <div className="wd-flex-gap"></div>
+            <AssignmentsGroupControlButtons percent={30} />
+          </div>
+          <ListGroup className="wd-assignment-list-content rounded-0">
+            <ListGroupItem className="wd-assignment-list-item p-3 ps-1 d-flex align-items-center">
+              <BsGripVertical className="me-2 fs-3" />
+              <LuNotebookPen className="me-2 fs-3 text-success" />
+              <div className="wd-assignment-list-item-content">
+                <Link
+                  href="/Courses/1234/Assignments/100"
+                  className="wd-assignment-link text-decoration-none text-black"
+                >
+                  A1
+                </Link>
+                <div className="wd-assignment-info">
+                  <span className="text-danger">Multiple Modules</span> |{" "}
+                  <b>Not available until</b> May 6 at 12:00am | <b>Due</b> May
+                  13 at 11:59pm | 100 pts
+                </div>
+              </div>
+              <div className="wd-flex-gap" />
+              <AssignmentControlButtons />
+            </ListGroupItem>
+
+            <ListGroupItem className="wd-assignment-list-item p-3 ps-1 d-flex align-items-center">
+              <BsGripVertical className="me-2 fs-3" />
+              <LuNotebookPen className="me-2 fs-3 text-success" />
+              <div className="wd-assignment-list-item-content">
+                <Link
+                  href="/Courses/1234/Assignments/101"
+                  className="wd-assignment-link text-decoration-none text-black"
+                >
+                  A2
+                </Link>
+                <div className="wd-assignment-info">
+                  <span className="text-danger">Multiple Modules</span> |{" "}
+                  <b>Not available until</b> May 13 at 12:00am | <b>Due</b> May
+                  20 at 11:59pm | 100 pts
+                </div>
+              </div>
+              <div className="wd-flex-gap" />
+              <AssignmentControlButtons />
+            </ListGroupItem>
+            <ListGroupItem className="wd-assignment-list-item p-3 ps-1 d-flex align-items-center">
+              <BsGripVertical className="me-2 fs-3" />
+              <LuNotebookPen className="me-2 fs-3 text-success" />
+              <div className="wd-assignment-list-item-content">
+                <Link
+                  href="/Courses/1234/Assignments/102"
+                  className="wd-assignment-link text-decoration-none text-black"
+                >
+                  A3
+                </Link>
+                <div className="wd-assignment-info">
+                  <span className="text-danger">Multiple Modules</span> |{" "}
+                  <b>Not available until</b> May 20 at 12:00am | <b>Due</b> May
+                  27 at 11:59pm | 100 pts
+                </div>
+              </div>
+              <div className="wd-flex-gap" />
+              <AssignmentControlButtons />
+            </ListGroupItem>
+          </ListGroup>
+        </ListGroupItem>
+        <ListGroupItem className="wd-quizzes-list-header p-0 mb-5 fs-5 border-gray">
+          <div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">
+            <BsGripVertical className="me-2 fs-3" /> Quizzes
+            <div className="wd-flex-gap"></div>
+            <AssignmentsGroupControlButtons percent={10} />
+          </div>
+        </ListGroupItem>
+        <ListGroupItem className="wd-assignment-list-header p-0 mb-5 fs-5 border-gray">
+          <div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">
+            <BsGripVertical className="me-2 fs-3" /> Exams
+            <div className="wd-flex-gap"></div>
+            <AssignmentsGroupControlButtons percent={30} />
+          </div>
+        </ListGroupItem>
+        <ListGroupItem className="wd-assignment-list-header p-0 mb-5 fs-5 border-gray">
+          <div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">
+            <BsGripVertical className="me-2 fs-3" /> Projects
+            <div className="wd-flex-gap"></div>
+            <AssignmentsGroupControlButtons percent={30} />
+          </div>
+        </ListGroupItem>
+      </ListGroup>
     </div>
   );
 }

@@ -18,7 +18,7 @@ import {
 export default function AssignmentEditor() {
   const assignmentsPathname =
     "/" + usePathname().split("/").splice(1, 3).join("/");
-  const { cid, aid } = useParams();
+  const { aid } = useParams();
   const assignment = assignments.find((a) => a._id === aid);
   return (
     <div id="wd-assignments-editor">

@@ -5,7 +5,6 @@ import { LiaBookSolid, LiaCogSolid } from "react-icons/lia";
 import { FaInbox, FaRegCircleUser } from "react-icons/fa6";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import Link from "next/link";
-import { useState } from "react";
 import "./styles.css";
 import { usePathname } from "next/navigation";
 export default function KambazNavigation() {

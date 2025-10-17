@@ -17,7 +17,10 @@ export default function Assignments() {
       <AssignmentControls />
       <div className="mt-5" id="wd-assignment-list">
         {assignmentGroups.map((group: string) => (
-          <div className="wd-assignment-list-header p-0 mb-5 fs-5 wd-border-light">
+          <div
+            key={group}
+            className="wd-assignment-list-header p-0 mb-5 fs-5 wd-border-light"
+          >
             <div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">
               <BsGripVertical className="me-2 fs-3" /> {group}
               <div className="wd-flex-gap"></div>

@@ -1,21 +1,22 @@
+"use client";
 import { ReactNode } from "react";
 import CourseNavigation from "./Navigation";
 import { FaAlignJustify } from "react-icons/fa";
-export default async function CoursesLayout({
+import { courses } from "../../Database";
+import Breadcrumb from "./Breadcrumb";
+import { useParams } from "next/navigation";
+export default function CoursesLayout({
   children,
-  params,
-}: Readonly<{ children: ReactNode; params: Promise<{ cid: string }> }>) {
-  const { cid } = await params;
+}: Readonly<{ children: ReactNode }>) {
+  const { cid }: { cid: string } = useParams();
+  const course = courses.find((course) => course._id === cid);
   return (
     <div id="wd-courses">
-      <h2 className="text-danger">
-        <FaAlignJustify className="me-4 fs-4 mb-1" />
-        Courses {cid}
-      </h2>
+      <Breadcrumb courseName={course?.name ?? ""} />
       <hr />
       <div className="d-flex">
         <div className="d-none d-md-block">
-          <CourseNavigation />
+          <CourseNavigation cid={cid} />
         </div>
         <div className="flex-fill">{children}</div>
       </div>

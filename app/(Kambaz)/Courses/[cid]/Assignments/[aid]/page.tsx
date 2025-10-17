@@ -1,4 +1,9 @@
+"use client";
+import { assignments } from "@/app/(Kambaz)/Database";
+import Link from "next/link";
+import { useParams, usePathname } from "next/navigation";
 import {
+  Button,
   Card,
   CardBody,
   Col,
@@ -11,11 +16,15 @@ import {
 } from "react-bootstrap";
 
 export default function AssignmentEditor() {
+  const assignmentsPathname =
+    "/" + usePathname().split("/").splice(1, 3).join("/");
+  const { cid, aid } = useParams();
+  const assignment = assignments.find((a) => a._id === aid);
   return (
     <div id="wd-assignments-editor">
       <Form>
         <FormLabel>Assignment Name</FormLabel>
-        <FormControl type="text" defaultValue={"A1"} />
+        <FormControl type="text" defaultValue={assignment?.title} />
         <FormControl
           className="mt-4"
           as="textarea"
@@ -178,6 +187,27 @@ aliquip ex ea commodo consequat. Duis aute irure dolor`}
                 </Row>
               </CardBody>
             </Card>
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <Col className="d-flex justify-content-end">
+            <Link href={assignmentsPathname} className="me-2">
+              <Button
+                type="button"
+                className="bg-secondary text-black rounded-1 wd-border-none"
+              >
+                Cancel
+              </Button>
+            </Link>
+            <Link href={assignmentsPathname}>
+              <Button
+                type="button"
+                className="bg-danger rounded-1 wd-border-none"
+              >
+                Save
+              </Button>
+            </Link>
           </Col>
         </Row>
       </Form>

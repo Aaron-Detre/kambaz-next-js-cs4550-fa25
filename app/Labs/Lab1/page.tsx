@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import "./index.css";
 
 export default function Lab1() {
   return (

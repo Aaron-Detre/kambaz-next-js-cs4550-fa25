@@ -33,17 +33,8 @@ body * {
   background-color: black;
 }
 
-.unselected span {
-  color: white;
-}
-
-.unselected > #wd-account-link {
-  color: white;
-}
-
-.list-group.wd > .list-group-item.active {
+.active {
   color: black;
-  background-color: white;
   border-left: 3px solid black !important;
 }
 
@@ -93,4 +84,20 @@ body * {
 
 .wd-assignment-list-item {
   border-left: 5px solid green;
+}
+
+.wd-space-between {
+  justify-content: space-between;
+}
+
+.wd-border-fat {
+  border: 5px solid black;
+}
+
+.wd-border-light {
+  border: 2px solid gray;
+}
+
+.wd-border-none {
+  border: none;
 }

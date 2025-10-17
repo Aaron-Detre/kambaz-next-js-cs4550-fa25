@@ -7,8 +7,16 @@ import { ListGroup, ListGroupItem } from "react-bootstrap";
 import Link from "next/link";
 import { useState } from "react";
 import "./styles.css";
+import { usePathname } from "next/navigation";
 export default function KambazNavigation() {
-  const [selected, setSelected] = useState("dashboard");
+  const pathname = usePathname();
+  const links = [
+    { label: "Dashboard", path: "/Dashboard", icon: AiOutlineDashboard },
+    { label: "Courses", path: "/Dashboard", icon: LiaBookSolid },
+    { label: "Calendar", path: "/Calendar", icon: IoCalendarOutline },
+    { label: "Inbox", path: "/Inbox", icon: FaInbox },
+    { label: "Labs", path: "/Labs", icon: LiaCogSolid },
+  ];
   return (
     <ListGroup
       className="rounded-0 position-fixed bottom-0 top-0 d-none d-md-block bg-black z-2"
@@ -25,83 +33,39 @@ export default function KambazNavigation() {
         <img src="/images/NEU.png" width="75px" alt="Northeastern University" />
       </ListGroupItem>
       <ListGroupItem
-        className={`border-0 text-center ${isSelected("account")}`}
+        as={Link}
+        href="/Account"
+        className={`text-center border-0 bg-black
+          ${
+            pathname.includes("Account")
+              ? "bg-white text-danger"
+              : "bg-black text-white"
+          }`}
       >
-        <Link
-          href="/Account"
-          id="wd-account-link"
-          className="text-decoration-none"
-          onClick={() => setSelected("account")}
-        >
-          <FaRegCircleUser className="fs-1" />
-          <span>Account</span>
-        </Link>
+        <FaRegCircleUser
+          className={`fs-1 ${
+            pathname.includes("Account") ? "text-danger" : "text-white"
+          }`}
+        />
+        <br />
+        Account
       </ListGroupItem>
-      <ListGroupItem
-        className={`border-0 text-center ${isSelected("dashboard")}`}
-      >
-        <Link
-          href="/Dashboard"
-          id="wd-dashboard-link"
-          className="text-decoration-none"
-          onClick={() => setSelected("dashboard")}
+      {links.map((link) => (
+        <ListGroupItem
+          key={link.label}
+          as={Link}
+          href={link.path}
+          className={`bg-black text-center border-0 ${
+            pathname.includes(link.label)
+              ? "text-danger bg-white"
+              : "text-white bg-black"
+          }`}
         >
-          <AiOutlineDashboard className="fs-1 text-danger" />
-          <span>Dashboard</span>
-        </Link>
-      </ListGroupItem>
-      <ListGroupItem
-        className={`border-0 text-center ${isSelected("courses")}`}
-      >
-        <Link
-          href="/Dashboard"
-          id="wd-courses-link"
-          className="text-decoration-none"
-          onClick={() => setSelected("courses")}
-        >
-          <LiaBookSolid className="fs-1 text-danger" />
-          <span>Courses</span>
-        </Link>
-      </ListGroupItem>
-      <ListGroupItem
-        className={`border-0 text-center ${isSelected("calendar")}`}
-      >
-        <Link
-          href="/Calendar"
-          id="wd-calendar-link"
-          className="text-decoration-none"
-          onClick={() => setSelected("calendar")}
-        >
-          <IoCalendarOutline className="fs-1 text-danger" />
-          <span>Calendar</span>
-        </Link>
-      </ListGroupItem>
-      <ListGroupItem className={`border-0 text-center ${isSelected("inbox")}`}>
-        <Link
-          href="/Inbox"
-          id="wd-inbox-link"
-          className="text-decoration-none"
-          onClick={() => setSelected("inbox")}
-        >
-          <FaInbox className="fs-1 text-danger" />
-          <span className="d-block">Inbox</span>
-        </Link>
-      </ListGroupItem>
-      <ListGroupItem className={`border-0 text-center ${isSelected("labs")}`}>
-        <Link
-          href="/Labs"
-          id="wd-labs-link"
-          className="text-decoration-none"
-          onClick={() => setSelected("labs")}
-        >
-          <LiaCogSolid className="fs-1 text-danger" />
-          <span className="d-block">Labs</span>
-        </Link>
-      </ListGroupItem>
+          {link.icon({ className: "fs-1 text-danger" })}
+          <br />
+          {link.label}
+        </ListGroupItem>
+      ))}
     </ListGroup>
   );
-
-  function isSelected(page: string): string {
-    return selected === page ? "selected" : "unselected";
-  }
 }

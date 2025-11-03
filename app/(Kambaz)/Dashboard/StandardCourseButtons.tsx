@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";

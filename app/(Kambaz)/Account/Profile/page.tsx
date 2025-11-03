@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button, FormControl, FormSelect } from "react-bootstrap";
+import { Button, FormControl } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { redirect } from "next/dist/client/components/navigation";
 import { setCurrentUser } from "../reducer";
+
 export default function Profile() {
-  const [profile, setProfile] = useState<any>({});
+  const [profile, setProfile] = useState<any>(null);
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: RootState) => state.account);
   const fetchProfile = () => {

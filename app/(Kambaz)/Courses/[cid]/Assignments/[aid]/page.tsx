@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { assignments } from "@/app/(Kambaz)/Database";
 import { AppDispatch } from "@/app/(Kambaz)/store";
@@ -17,7 +18,7 @@ import {
   Row,
 } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { addAssignment, deleteAssignment, updateAssignment } from "../reducer";
+import { addAssignment, updateAssignment } from "../reducer";
 import { Assignment } from "../type";
 
 export default function AssignmentEditor() {

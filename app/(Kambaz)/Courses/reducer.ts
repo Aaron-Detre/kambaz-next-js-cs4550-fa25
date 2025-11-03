@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit";
 import { courses } from "../Database";
 import { v4 as uuidv4 } from "uuid";
@@ -16,6 +17,7 @@ const coursesSlice = createSlice({
       state.courses = state.courses.filter(
         (course: any) => course._id !== courseId
       );
+      //TODO: remove enrollments for course
     },
     updateCourse: (state, { payload: course }) => {
       state.courses = state.courses.map((c: any) =>

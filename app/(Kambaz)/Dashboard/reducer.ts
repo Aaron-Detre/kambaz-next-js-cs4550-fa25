@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSlice } from "@reduxjs/toolkit";
-import { enrollments } from "../Database";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import * as db from "../Database";
 import { v4 as uuidv4 } from "uuid";
 
 const initialState: { enrollments: any[] } = {
-  enrollments: enrollments,
+  enrollments: db.enrollments,
 };
 
 const enrollmentsSlice = createSlice({
   name: "enrollments",
   initialState,
   reducers: {
-    addEnrollment: (
+    addUserEnrollment: (
       state,
-      action: { payload: { userId: string; courseId: string } }
+      action: PayloadAction<{ userId: string; courseId: string }>
     ) => {
       state.enrollments = [
         ...state.enrollments,
@@ -24,10 +24,18 @@ const enrollmentsSlice = createSlice({
         },
       ];
     },
-    deleteEnrollment: (
+    deleteUserEnrollment: (
       state,
-      action: { payload: { userId: string; courseId: string } }
+      action: PayloadAction<{ userId: string; courseId: string }>
     ) => {
+      state.enrollments = state.enrollments.filter(
+        (enrollment: any) =>
+          enrollment.user !== action.payload.userId ||
+          enrollment.course !== action.payload.courseId
+      );
+    },
+    // action.payload represents course id of course to be deleted
+    deleteCourseEnrollments: (state, action: PayloadAction<string>) => {
       state.enrollments = state.enrollments.filter(
         (enrollment: any) => enrollment.course !== action.payload
       );
@@ -35,5 +43,9 @@ const enrollmentsSlice = createSlice({
   },
 });
 
-export const { addEnrollment, deleteEnrollment } = enrollmentsSlice.actions;
+export const {
+  addUserEnrollment,
+  deleteUserEnrollment,
+  deleteCourseEnrollments,
+} = enrollmentsSlice.actions;
 export default enrollmentsSlice.reducer;

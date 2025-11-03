@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { deleteCourse } from "../Courses/reducer";
+import { deleteCourseEnrollments } from "./reducer";
 
 export default function StandardCourseButtons({
   course,
@@ -27,7 +28,9 @@ export default function StandardCourseButtons({
       <Button
         onClick={(event) => {
           event.preventDefault();
-          dispatch(deleteCourse(course._id));
+          const courseId = course._id;
+          dispatch(deleteCourse(courseId));
+          dispatch(deleteCourseEnrollments(courseId));
         }}
         className="btn btn-danger"
         id="wd-delete-course-click"

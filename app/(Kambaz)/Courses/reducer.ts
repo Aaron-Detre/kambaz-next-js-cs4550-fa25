@@ -17,7 +17,6 @@ const coursesSlice = createSlice({
       state.courses = state.courses.filter(
         (course: any) => course._id !== courseId
       );
-      //TODO: remove enrollments for course
     },
     updateCourse: (state, { payload: course }) => {
       state.courses = state.courses.map((c: any) =>

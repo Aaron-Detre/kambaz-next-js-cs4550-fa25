@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
-import { addEnrollment, deleteEnrollment } from "./reducer";
+import { addUserEnrollment, deleteUserEnrollment } from "./reducer";
 
 export default function EnrollmentsModeButtons({
   enrolled,
@@ -16,7 +16,10 @@ export default function EnrollmentsModeButtons({
           onClick={(event) => {
             event.preventDefault();
             dispatch(
-              deleteEnrollment({ userId: currentUser._id, courseId: courseId })
+              deleteUserEnrollment({
+                userId: currentUser._id,
+                courseId: courseId,
+              })
             );
           }}
           className="btn btn-danger wd-enabled-link"
@@ -31,7 +34,7 @@ export default function EnrollmentsModeButtons({
           onClick={(event) => {
             event.preventDefault();
             dispatch(
-              addEnrollment({ userId: currentUser._id, courseId: courseId })
+              addUserEnrollment({ userId: currentUser._id, courseId: courseId })
             );
           }}
           className={`btn me-2 ${

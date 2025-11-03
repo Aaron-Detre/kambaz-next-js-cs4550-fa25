@@ -8,7 +8,7 @@ import { deleteCourseEnrollments } from "./reducer";
 export default function StandardCourseButtons({
   course,
   setCourse,
-}: Readonly<{ course: any; setCourse: Function }>) {
+}: Readonly<{ course: any; setCourse: any }>) {
   const dispatch: AppDispatch = useDispatch();
   return (
     <div className="d-flex align-items-center">

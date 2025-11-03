@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { Button, FormControl, InputGroup } from "react-bootstrap";
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
 import { FaMagnifyingGlass, FaPlus } from "react-icons/fa6";
+import { v4 as uuidv4 } from "uuid";
 
 export default function AssignmentControls() {
   return (
@@ -24,15 +26,14 @@ export default function AssignmentControls() {
         <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
         Group
       </Button>
-      <Button
-        variant="danger"
-        size="lg"
-        className="me-1"
+      <Link
+        href={`Assignments/${uuidv4()}`}
+        className="btn btn-danger btn-lg me-1"
         id="wd-add-assignment-btn"
       >
         <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
         Assignment
-      </Button>
+      </Link>
     </div>
   );
 }

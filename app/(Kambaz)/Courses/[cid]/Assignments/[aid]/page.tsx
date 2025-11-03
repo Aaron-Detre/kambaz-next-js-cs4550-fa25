@@ -1,7 +1,9 @@
 "use client";
 import { assignments } from "@/app/(Kambaz)/Database";
+import { AppDispatch } from "@/app/(Kambaz)/store";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   Button,
   Card,
@@ -14,26 +16,76 @@ import {
   FormSelect,
   Row,
 } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { addAssignment, deleteAssignment, updateAssignment } from "../reducer";
+import { Assignment } from "../type";
 
 export default function AssignmentEditor() {
   const assignmentsPathname =
     "/" + usePathname().split("/").splice(1, 3).join("/");
-  const { aid } = useParams();
-  const assignment = assignments.find((a) => a._id === aid);
+  const { cid, aid } = useParams();
+  const baseAssignment: Assignment = {
+    _id: "",
+    title: "",
+    course: `${cid}`,
+    description: "",
+    points: 100,
+    due: "2025-11-01",
+    from: "2025-11-01",
+    until: "2025-11-01",
+    group: "Assignments",
+  };
+  const [assignment, setAssignment] = useState<any>(
+    assignments.find((a) => a._id === aid) ?? baseAssignment
+  );
+
+  const dispatch: AppDispatch = useDispatch();
+
+  const updateTitle = (e: any) => {
+    setAssignment({ ...assignment, title: e.target.value });
+  };
+  const updateDescription = (e: any) => {
+    setAssignment({ ...assignment, description: e.target.value });
+  };
+
+  const updatePoints = (e: any) => {
+    setAssignment({ ...assignment, points: parseInt(e.target.value) });
+  };
+
+  const updateGroup = (e: any) => {
+    setAssignment({ ...assignment, group: e.target.value });
+  };
+
+  // const updateGradeDipslayType = (e: any) => {
+  //   setAssignment({ ...assignment, title: e.target.value });
+  // };
+
+  const updateDueDate = (e: any) => {
+    setAssignment({ ...assignment, due: e.target.value });
+  };
+
+  const updateAvailableFromDate = (e: any) => {
+    setAssignment({ ...assignment, from: e.target.value });
+  };
+  const updateAvailableUntilDate = (e: any) => {
+    setAssignment({ ...assignment, until: e.target.value });
+  };
+
   return (
     <div id="wd-assignments-editor">
       <Form>
         <FormLabel>Assignment Name</FormLabel>
-        <FormControl type="text" defaultValue={assignment?.title} />
+        <FormControl
+          type="text"
+          defaultValue={assignment.title}
+          onChange={updateTitle}
+        />
         <FormControl
           className="mt-4"
           as="textarea"
           rows={8}
-          defaultValue={`The assignment is available online Submit a link to the landing page
-\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-aliquip ex ea commodo consequat. Duis aute irure dolor`}
+          onChange={updateDescription}
+          defaultValue={assignment.description}
         />
         <Row className="mt-5">
           <Col
@@ -43,7 +95,11 @@ aliquip ex ea commodo consequat. Duis aute irure dolor`}
             <FormLabel>Points</FormLabel>
           </Col>
           <Col md={10}>
-            <FormControl type="text" defaultValue={100} />
+            <FormControl
+              type="number"
+              defaultValue={assignment.points}
+              onChange={updatePoints}
+            />
           </Col>
         </Row>
         <Row className="mt-4">
@@ -54,15 +110,18 @@ aliquip ex ea commodo consequat. Duis aute irure dolor`}
             <FormLabel>Assignment Group</FormLabel>
           </Col>
           <Col md={10}>
-            <FormSelect>
-              <option value="assignments" defaultChecked>
-                ASSIGNMENTS
+            <FormSelect onChange={updateGroup} defaultValue={assignment.group}>
+              <option value="Assignments" defaultChecked>
+                Assignments
               </option>
-              <option value="projects" defaultChecked>
-                PROJECTS
+              <option value="Projects" defaultChecked>
+                Projects
               </option>
-              <option value="activities" defaultChecked>
-                IN-CLASS ACTIVITIES
+              <option value="Activities" defaultChecked>
+                In-Class Activities
+              </option>
+              <option value="Quizzes" defaultChecked>
+                Quizzes
               </option>
             </FormSelect>
           </Col>
@@ -72,7 +131,7 @@ aliquip ex ea commodo consequat. Duis aute irure dolor`}
             md={2}
             className="d-md-flex justify-content-end align-items-center"
           >
-            <FormLabel>Display Grade as</FormLabel>
+            <FormLabel>Display Grade as (not saved)</FormLabel>
           </Col>
           <Col md={10}>
             <FormSelect>
@@ -93,7 +152,7 @@ aliquip ex ea commodo consequat. Duis aute irure dolor`}
             md={2}
             className="d-md-flex justify-content-end align-items-start"
           >
-            <FormLabel>Submission Type</FormLabel>
+            <FormLabel>Submission Type (not saved)</FormLabel>
           </Col>
           <Col md={10}>
             <Card>
@@ -154,7 +213,7 @@ aliquip ex ea commodo consequat. Duis aute irure dolor`}
                 <Row>
                   <Col lg={2} xl={1}>
                     <FormLabel>
-                      <b>Assign to</b>
+                      <b>Assign to (not saved)</b>
                     </FormLabel>
                   </Col>
                   <Col lg={10} xl={11}>
@@ -168,7 +227,11 @@ aliquip ex ea commodo consequat. Duis aute irure dolor`}
                     </FormLabel>
                   </Col>
                   <Col lg={10} xl={11}>
-                    <FormControl type="date" defaultValue={"2024-04-13"} />
+                    <FormControl
+                      type="date"
+                      defaultValue={assignment.due}
+                      onChange={updateDueDate}
+                    />
                   </Col>
                 </Row>
                 <Row>
@@ -176,13 +239,21 @@ aliquip ex ea commodo consequat. Duis aute irure dolor`}
                     <FormLabel>
                       <b>Available from</b>
                     </FormLabel>
-                    <FormControl type="date" defaultValue={"2024-04-06"} />
+                    <FormControl
+                      type="date"
+                      defaultValue={assignment.from}
+                      onChange={updateAvailableFromDate}
+                    />
                   </Col>
                   <Col lg={6} className="mt-4">
                     <FormLabel>
                       <b>Until</b>
                     </FormLabel>
-                    <FormControl type="date" />
+                    <FormControl
+                      type="date"
+                      defaultValue={assignment.until}
+                      onChange={updateAvailableUntilDate}
+                    />
                   </Col>
                 </Row>
               </CardBody>
@@ -204,6 +275,14 @@ aliquip ex ea commodo consequat. Duis aute irure dolor`}
               <Button
                 type="button"
                 className="bg-danger rounded-1 wd-border-none"
+                onClick={() => {
+                  // dispatch(deleteAssignment(assignment._id));
+                  if (assignment._id === "") {
+                    dispatch(addAssignment(assignment));
+                  } else {
+                    dispatch(updateAssignment(assignment));
+                  }
+                }}
               >
                 Save
               </Button>

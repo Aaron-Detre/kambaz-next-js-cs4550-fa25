@@ -4,57 +4,35 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 export default function TOC() {
   const pathname = usePathname();
+  const paths = [
+    { link: "/Labs", label: "Labs" },
+    { link: "/Labs/Lab1", label: "Lab1" },
+    { link: "/Labs/Lab2", label: "Lab2" },
+    { link: "/Labs/Lab3", label: "Lab3" },
+    { link: "/Labs/Lab4", label: "Lab4" },
+    { link: "/", label: "Kambaz" },
+    {
+      link: "https://github.com/Aaron-Detre/kambaz-next-js-cs4550-fa25",
+      label: "GitHub",
+      target: "_blank",
+    },
+  ];
   return (
     <Nav variant="pills">
-      <NavItem>
-        <NavLink
-          href="/Labs"
-          as={Link}
-          className={`nav-link ${pathname.endsWith("Labs") ? "active" : ""}`}
-        >
-          Labs
-        </NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink
-          href="/Labs/Lab1"
-          as={Link}
-          className={`nav-link ${pathname.endsWith("Lab1") ? "active" : ""}`}
-        >
-          Lab 1
-        </NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink
-          href="/Labs/Lab2"
-          as={Link}
-          className={`nav-link ${pathname.endsWith("Lab2") ? "active" : ""}`}
-        >
-          Lab 2
-        </NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink
-          href="/Labs/Lab3"
-          as={Link}
-          className={`nav-link ${pathname.endsWith("Lab3") ? "active" : ""}`}
-        >
-          Lab 3
-        </NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink href="/" as={Link}>
-          Kambaz
-        </NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink
-          href="https://github.com/Aaron-Detre/kambaz-next-js-cs4550-fa25"
-          target="_blank"
-        >
-          GitHub
-        </NavLink>
-      </NavItem>
+      {paths.map((path) => (
+        <NavItem key={path.label}>
+          <NavLink
+            href={path.link}
+            as={Link}
+            className={`nav-link ${
+              pathname.endsWith(path.label) ? "wd-active" : ""
+            }`}
+            target={path.target ?? "_self"}
+          >
+            {path.label}
+          </NavLink>
+        </NavItem>
+      ))}
     </Nav>
   );
 }

@@ -24,7 +24,9 @@ export default function CourseNavigation({ cid }: Readonly<{ cid: string }>) {
         <ListGroupItem
           key={link.label}
           className={`border-0 bg-white ${
-            pathname.includes(link.label) ? "active text-black" : "text-danger"
+            pathname.includes(link.label)
+              ? "wd-active text-black"
+              : "text-danger"
           }`}
           as={Link}
           href={`/Courses/${cid}/${link.path}`}

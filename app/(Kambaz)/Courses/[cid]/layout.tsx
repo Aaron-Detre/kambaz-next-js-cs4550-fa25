@@ -1,22 +1,28 @@
 "use client";
 import { ReactNode } from "react";
 import CourseNavigation from "./Navigation";
-import { courses } from "../../Database";
-import Breadcrumb from "./Breadcrumb";
+import Breadcrumb from "./Breadcrumb/Breadcrumb";
 import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 export default function CoursesLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   const { cid }: { cid: string } = useParams();
-  const course = courses.find((course) => course._id === cid);
+  const { courses } = useSelector((state: RootState) => state.courses);
+  const { open } = useSelector((state: RootState) => state.breadcrumb);
+  const course = courses.find((course: any) => course._id === cid);
+
   return (
     <div id="wd-courses">
       <Breadcrumb courseName={course?.name ?? ""} />
       <hr />
       <div className="d-flex">
-        <div className="d-none d-md-block">
-          <CourseNavigation cid={cid} />
-        </div>
+        {open && (
+          <div className="d-none d-md-block">
+            <CourseNavigation cid={cid} />
+          </div>
+        )}
         <div className="flex-fill">{children}</div>
       </div>
     </div>

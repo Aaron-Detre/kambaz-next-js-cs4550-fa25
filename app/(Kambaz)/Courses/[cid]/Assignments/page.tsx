@@ -7,11 +7,13 @@ import AssignmentsGroupControlButtons from "./AssignmentsGroupControlButtons";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import { LuNotebookPen } from "react-icons/lu";
 import { useParams } from "next/navigation";
-import { assignments } from "@/app/(Kambaz)/Database";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/(Kambaz)/store";
 
 export default function Assignments() {
   const { cid } = useParams();
-  const assignmentGroups = ["Assignments", "Quizzes", "Exams", "Projects"];
+  const assignmentGroups = ["Assignments", "Quizzes", "Projects", "Activities"];
+  const { assignments } = useSelector((state: RootState) => state.assignments);
   return (
     <div id="wd-assignments-page">
       <AssignmentControls />
@@ -48,12 +50,12 @@ export default function Assignments() {
                       </Link>
                       <div className="wd-assignment-info">
                         <span className="text-danger">Multiple Modules</span> |{" "}
-                        <b>Not available until</b> May 6 at 12:00am | <b>Due</b>{" "}
-                        May 13 at 11:59pm | 100 pts
+                        <b>Not available until</b> {assignment.from} |{" "}
+                        <b>Due</b> {assignment.due} | {assignment.points} pts
                       </div>
                     </div>
                     <div className="wd-flex-gap" />
-                    <AssignmentControlButtons />
+                    <AssignmentControlButtons assignmentId={assignment._id} />
                   </ListGroupItem>
                 ))}
             </ListGroup>

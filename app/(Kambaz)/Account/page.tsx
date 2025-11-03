@@ -1,5 +1,13 @@
+"use client";
+import { useSelector } from "react-redux";
 import { redirect } from "next/dist/client/components/navigation";
+import { RootState } from "../store";
 
 export default function AccountPage() {
-  redirect("/Account/SignIn");
+  const { currentUser } = useSelector((state: RootState) => state.account);
+  if (!currentUser) {
+    redirect("/Account/SignIn");
+  } else {
+    redirect("/Account/Profile");
+  }
 }

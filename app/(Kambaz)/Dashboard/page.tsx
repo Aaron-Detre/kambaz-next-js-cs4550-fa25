@@ -1,5 +1,5 @@
+"use client";
 import Link from "next/link";
-import * as db from "../Database";
 import {
   Button,
   Card,
@@ -8,20 +8,121 @@ import {
   CardText,
   CardTitle,
   Col,
+  Collapse,
+  FormControl,
+  FormLabel,
   Row,
 } from "react-bootstrap";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store";
+import { addNewCourse, deleteCourse, updateCourse } from "../Courses/reducer";
+import * as db from "../Database";
+import StandardCourseButtons from "./StandardCourseButtons";
+import EnrollmentsModeButtons from "./EnrollmentsModeButtons";
+
 export default function Dashboard() {
-  const courses = db.courses;
+  const { currentUser } = useSelector((state: RootState) => state.account);
+  const { courses } = useSelector((state: RootState) => state.courses);
+  const { enrollments } = useSelector((state: RootState) => state.enrollments);
+  const dispatch: AppDispatch = useDispatch();
+  const [course, setCourse] = useState<any>({
+    _id: "0",
+    name: "",
+    number: "New Number",
+    startDate: "2023-09-10",
+    endDate: "2023-12-15",
+    image: "react.png",
+    description: "",
+  });
+
+  const [enrollmentsMode, setEnrollmentsMode] = useState(false);
+
+  const filterByEnrollment = (course: any) => {
+    return enrollmentsMode ? true : userIsEnrolled(course);
+  };
+
+  const userIsEnrolled = (course: any) =>
+    enrollments.some(
+      (enrollment) =>
+        enrollment.user === currentUser?._id && enrollment.course === course._id
+    );
+
+  const numEnrollments = () =>
+    enrollments.filter(
+      (enrollment: any) => enrollment.user === currentUser?._id
+    ).length;
+
+  const [openEditor, setOpenEditor] = useState(false);
   return (
     <div id="wd-dashboard">
-      <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
+      <div className="d-flex align-items-center">
+        <h1 id="wd-dashboard-title">Dashboard</h1>
+        <div className="wd-flex-gap" />
+        <Button
+          variant="primary"
+          onClick={() => setEnrollmentsMode(!enrollmentsMode)}
+          className="me-2"
+        >
+          Enrollments
+        </Button>
+        <Button variant="success" onClick={() => setOpenEditor(!openEditor)}>
+          Course Editor
+        </Button>
+      </div>
+      <hr />
+      <Collapse in={openEditor}>
+        <div>
+          <h5>
+            New Course
+            <button
+              className="btn btn-primary float-end"
+              id="wd-add-new-course-click"
+              onClick={() => dispatch(addNewCourse(course))}
+            >
+              Add
+            </button>
+            <button
+              className="btn btn-warning float-end me-2"
+              onClick={() => dispatch(updateCourse(course))}
+              id="wd-update-course-click"
+            >
+              Update
+            </button>
+          </h5>
+          <br />
+          <FormLabel htmlFor="wd-course-name-input">Course Name</FormLabel>
+          <FormControl
+            className="mb-2"
+            defaultValue={course.name}
+            id="wd-course-name-input"
+            onChange={(e) => setCourse({ ...course, name: e.target.value })}
+            placeholder="New Course"
+          />
+          <FormLabel htmlFor="wd-course-description-input">
+            Course Description
+          </FormLabel>
+          <FormControl
+            as="textarea"
+            rows={3}
+            defaultValue={course.description}
+            id="wd-course-description-input"
+            onChange={(e) =>
+              setCourse({ ...course, description: e.target.value })
+            }
+            placeholder="New Description"
+          />
+          <hr />
+        </div>
+      </Collapse>
       <h2 id="wd-dashboard-published">
-        Published Courses ({courses.length})
-      </h2>{" "}
+        Published Courses ({courses.length}) | Enrolled Courses (
+        {numEnrollments()})
+      </h2>
       <hr />
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
-          {courses.map((course) => (
+          {courses.filter(filterByEnrollment).map((course: any) => (
             <Col
               key={course._id}
               className="wd-dashboard-course"
@@ -30,7 +131,9 @@ export default function Dashboard() {
               <Card>
                 <Link
                   href={`/Courses/${course._id}/Home`}
-                  className="wd-dashboard-course-link text-decoration-none text-dark"
+                  className={`wd-dashboard-course-link text-decoration-none text-dark ${
+                    enrollmentsMode && "wd-disabled-link"
+                  }`}
                 >
                   <CardImg
                     variant="top"
@@ -48,229 +151,22 @@ export default function Dashboard() {
                     >
                       {course.description}
                     </CardText>
-                    <Button variant="primary">Go</Button>
+                    {enrollmentsMode ? (
+                      <EnrollmentsModeButtons
+                        enrolled={userIsEnrolled(course)}
+                        courseId={course._id}
+                      />
+                    ) : (
+                      <StandardCourseButtons
+                        course={course}
+                        setCourse={setCourse}
+                      />
+                    )}
                   </CardBody>
                 </Link>
               </Card>
             </Col>
           ))}
-          {/* </Col>
-          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
-            <Card>
-              <Link
-                href="/Courses/9876"
-                className="wd-dashboard-course-link text-decoration-none text-dark"
-              >
-                <CardImg
-                  variant="top"
-                  src="/images/angular.png"
-                  width="100%"
-                  height={160}
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS9876 Angular
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Angular developer
-                  </CardText>
-                  <Button variant="primary">Go</Button>
-                </CardBody>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
-            <Card>
-              <Link
-                href="/Courses/4729"
-                className="wd-dashboard-course-link text-decoration-none text-dark"
-              >
-                <CardImg
-                  variant="top"
-                  src="/images/vue.svg"
-                  width="100%"
-                  height={160}
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS4729 Vue
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Vue developer
-                  </CardText>
-                  <Button variant="primary">Go</Button>
-                </CardBody>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
-            <Card>
-              <Link
-                href="/Courses/2069"
-                className="wd-dashboard-course-link text-decoration-none text-dark"
-              >
-                <CardImg
-                  variant="top"
-                  src="/images/svelte.png"
-                  width="100%"
-                  height={160}
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS2069 Svelte
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Svelte developer
-                  </CardText>
-                  <Button variant="primary">Go</Button>
-                </CardBody>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
-            <Card>
-              <Link
-                href="/Courses/5937"
-                className="wd-dashboard-course-link text-decoration-none text-dark"
-              >
-                <CardImg
-                  variant="top"
-                  src="/images/ember.png"
-                  width="100%"
-                  height={160}
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS5937 Ember
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Ember developer
-                  </CardText>
-                  <Button variant="primary">Go</Button>
-                </CardBody>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
-            <Card>
-              <Link
-                href="/Courses/6798"
-                className="wd-dashboard-course-link text-decoration-none text-dark"
-              >
-                <CardImg
-                  variant="top"
-                  src="/images/alpine.jpg"
-                  width="100%"
-                  height={160}
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS6798 Alpine
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Alpine developer
-                  </CardText>
-                  <Button variant="primary">Go</Button>
-                </CardBody>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
-            <Card>
-              <Link
-                href="/Courses/7999"
-                className="wd-dashboard-course-link text-decoration-none text-dark"
-              >
-                <CardImg
-                  variant="top"
-                  src="/images/ASP.png"
-                  width="100%"
-                  height={160}
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS7999 ASP.NET
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    ASP.NET developer
-                  </CardText>
-                  <Button variant="primary">Go</Button>
-                </CardBody>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
-            <Card>
-              <Link
-                href="/Courses/2310"
-                className="wd-dashboard-course-link text-decoration-none text-dark"
-              >
-                <CardImg
-                  variant="top"
-                  src="/images/jQuery.webp"
-                  width="100%"
-                  height={160}
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS2310 jQuery
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    jQuery developer
-                  </CardText>
-                  <Button variant="primary">Go</Button>
-                </CardBody>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course" style={{ width: "300px" }}>
-            <Card>
-              <Link
-                href="/Courses/4730"
-                className="wd-dashboard-course-link text-decoration-none text-dark"
-              >
-                <CardImg
-                  variant="top"
-                  src="/images/qwik.png"
-                  width="100%"
-                  height={160}
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS4729 Qwik
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Qwik developer
-                  </CardText>
-                  <Button variant="primary">Go</Button>
-                </CardBody>
-              </Link>
-            </Card>
-          </Col> */}
         </Row>
       </div>
     </div>

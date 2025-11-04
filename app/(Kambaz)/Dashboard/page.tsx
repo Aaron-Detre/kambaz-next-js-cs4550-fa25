@@ -54,6 +54,7 @@ export default function Dashboard() {
     ).length;
 
   const [openEditor, setOpenEditor] = useState(false);
+
   return (
     <div id="wd-dashboard">
       <div className="d-flex align-items-center">
@@ -96,7 +97,7 @@ export default function Dashboard() {
           <FormLabel htmlFor="wd-course-name-input">Course Name</FormLabel>
           <FormControl
             className="mb-2"
-            defaultValue={course.name}
+            value={course.name}
             id="wd-course-name-input"
             onChange={(e) => setCourse({ ...course, name: e.target.value })}
             placeholder="New Course"
@@ -107,7 +108,7 @@ export default function Dashboard() {
           <FormControl
             as="textarea"
             rows={3}
-            defaultValue={course.description}
+            value={course.description}
             id="wd-course-description-input"
             onChange={(e) =>
               setCourse({ ...course, description: e.target.value })
@@ -124,43 +125,43 @@ export default function Dashboard() {
       <hr />
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
-          {courses.filter(filterByEnrollment).map((course: any) => (
+          {courses.filter(filterByEnrollment).map((dashboardCourse: any) => (
             <Col
-              key={course._id}
+              key={dashboardCourse._id}
               className="wd-dashboard-course"
               style={{ width: "300px" }}
             >
               <Card>
                 <Link
-                  href={`/Courses/${course._id}/Home`}
+                  href={`/Courses/${dashboardCourse._id}/Home`}
                   className={`wd-dashboard-course-link text-decoration-none text-dark ${
                     enrollmentsMode && "wd-disabled-link"
                   }`}
                 >
                   <CardImg
                     variant="top"
-                    src={`/images/${course.image}`}
+                    src={`/images/${dashboardCourse.image}`}
                     width="100%"
                     height={160}
                   />
                   <CardBody>
                     <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                      {course.name}
+                      {dashboardCourse.name}
                     </CardTitle>
                     <CardText
                       className="wd-dashboard-course-description overflow-hidden"
                       style={{ height: "100px" }}
                     >
-                      {course.description}
+                      {dashboardCourse.description}
                     </CardText>
                     {enrollmentsMode ? (
                       <EnrollmentsModeButtons
-                        enrolled={userIsEnrolled(course)}
-                        courseId={course._id}
+                        enrolled={userIsEnrolled(dashboardCourse)}
+                        courseId={dashboardCourse._id}
                       />
                     ) : (
                       <StandardCourseButtons
-                        course={course}
+                        course={dashboardCourse}
                         setCourse={setCourse}
                       />
                     )}

@@ -17,6 +17,7 @@ const todosSlice = createSlice({
       ];
       state.todos = newTodos;
       state.todo = { title: "" };
+      console.log(state.todo);
     },
     deleteTodo: (state, action) => {
       const newTodos = state.todos.filter((todo) => todo.id !== action.payload);

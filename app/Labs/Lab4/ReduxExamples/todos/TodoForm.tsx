@@ -1,4 +1,4 @@
-import { Button, FormControl, ListGroupItem } from "react-bootstrap";
+import { Button, FormControl, FormLabel, ListGroupItem } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
 import { addTodo, updateTodo, setTodo } from "./todosReducer";
@@ -12,12 +12,17 @@ export default function TodoForm() {
       <Button onClick={() => dispatch(addTodo(todo))} id="wd-add-todo-click">
         Add
       </Button>
-      <Button onClick={() => updateTodo(todo)} id="wd-update-todo-click">
+      <Button
+        onClick={() => dispatch(updateTodo(todo))}
+        id="wd-update-todo-click"
+      >
         Update
       </Button>
+      <FormLabel htmlFor="wd-todo-form-entry">test</FormLabel>
       <FormControl
+        id="wd-todo-form-entry"
         value={todo.title}
-        onChange={(e) => setTodo({ ...todo, title: e.target.value })}
+        onChange={(e) => dispatch(setTodo({ ...todo, title: e.target.value }))}
       />
     </ListGroupItem>
   );

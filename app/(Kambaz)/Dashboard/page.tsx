@@ -58,6 +58,8 @@ export default function Dashboard() {
     <div id="wd-dashboard">
       <div className="d-flex align-items-center">
         <h1 id="wd-dashboard-title">Dashboard</h1>
+        {!currentUser &&
+          ">>>sign in with username: 'test', password: 'test' to access courses"}
         <div className="wd-flex-gap" />
         <Button
           variant="primary"

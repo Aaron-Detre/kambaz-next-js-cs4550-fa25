@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { assignments } from "@/app/(Kambaz)/Database";
-import { AppDispatch } from "@/app/(Kambaz)/store";
+import { AppDispatch, RootState } from "@/app/(Kambaz)/store";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
@@ -17,7 +16,7 @@ import {
   FormSelect,
   Row,
 } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addAssignment, updateAssignment } from "../reducer";
 import { Assignment } from "../type";
 
@@ -25,6 +24,7 @@ export default function AssignmentEditor() {
   const assignmentsPathname =
     "/" + usePathname().split("/").splice(1, 3).join("/");
   const { cid, aid } = useParams();
+  const { assignments } = useSelector((state: RootState) => state.assignments);
   const baseAssignment: Assignment = {
     _id: "",
     title: "",

@@ -28,7 +28,7 @@ export default function Dashboard() {
   const { courses } = useSelector((state: RootState) => state.courses);
   const { enrollments } = useSelector((state: RootState) => state.enrollments);
   const dispatch: AppDispatch = useDispatch();
-  // const [numCourses, setNumCourses] = useState(0);
+  // const [numCourses, setNumCourses] = useState(0)
   const [course, setCourse] = useState<any>({
     _id: "0",
     name: "",

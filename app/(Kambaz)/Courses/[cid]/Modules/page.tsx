@@ -30,18 +30,16 @@ export default function Modules() {
   const onCreateModuleForCourse = async () => {
     if (!cid) return;
     const newModule = { name: moduleName, course: cid };
-    const module = await client.createModuleForCourse(cid as string, newModule);
-    dispatch(setModules([...modules, module]));
+    const mod = await client.createModuleForCourse(cid as string, newModule);
+    dispatch(setModules([...modules, mod]));
   };
   const onRemoveModule = async (moduleId: string) => {
     await client.deleteModule(moduleId);
     dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
   };
-  const onUpdateModule = async (module: any) => {
-    await client.updateModule(module);
-    const newModules = modules.map((m: any) =>
-      m._id === module._id ? module : m
-    );
+  const onUpdateModule = async (mod: any) => {
+    await client.updateModule(mod);
+    const newModules = modules.map((m: any) => (m._id === mod._id ? mod : m));
     dispatch(setModules(newModules));
   };
   useEffect(() => {
@@ -59,41 +57,39 @@ export default function Modules() {
       <br />
       <br />
       <div id="wd-modules">
-        {modules.map((module: any) => (
+        {modules.map((mod: any) => (
           <div
-            key={module._id}
+            key={mod._id}
             className="wd-module p-0 mb-5 fs-5 wd-border-light"
           >
             <div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center wd-space-between">
               <div className="flex-fill">
                 <BsGripVertical className="me-2 fs-3" />
-                {!module.editing && module.name}
-                {module.editing && (
+                {!mod.editing && mod.name}
+                {mod.editing && (
                   <FormControl
                     className="w-50 d-inline-block"
                     onChange={(e) =>
-                      dispatch(
-                        updateModule({ ...module, name: e.target.value })
-                      )
+                      dispatch(updateModule({ ...mod, name: e.target.value }))
                     }
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        onUpdateModule({ ...module, editing: false });
+                        onUpdateModule({ ...mod, editing: false });
                       }
                     }}
-                    defaultValue={module.name}
+                    defaultValue={mod.name}
                   />
                 )}
               </div>
               <ModuleControlButtons
-                moduleId={module._id}
+                moduleId={mod._id}
                 deleteModule={(moduleId) => onRemoveModule(moduleId)}
                 editModule={(moduleId) => dispatch(editModule(moduleId))}
               />
             </div>
-            {module.lessons && (
+            {mod.lessons && (
               <ListGroup className="wd-lessons rounded-0">
-                {module.lessons.map((lesson: any) => (
+                {mod.lessons.map((lesson: any) => (
                   <ListGroupItem
                     key={lesson._id}
                     className="wd-lesson p-3 ps-1 d-flex align-items-center wd-space-between"

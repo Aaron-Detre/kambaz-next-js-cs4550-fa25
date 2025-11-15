@@ -7,13 +7,39 @@ import AssignmentsGroupControlButtons from "./AssignmentsGroupControlButtons";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import { LuNotebookPen } from "react-icons/lu";
 import { useParams } from "next/navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/(Kambaz)/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/(Kambaz)/store";
+import { setAssignments } from "./reducer";
+import * as client from "../../client";
+import { useEffect } from "react";
 
 export default function Assignments() {
   const { cid } = useParams();
   const assignmentGroups = ["Assignments", "Quizzes", "Projects", "Activities"];
   const { assignments } = useSelector((state: RootState) => state.assignments);
+  const dispatch: AppDispatch = useDispatch();
+
+  const onDeleteAssignment = async (assignment: any) => {
+    const status = await client.deleteAssignment(assignment);
+    //TODO: if status is bad ...
+    dispatch(
+      setAssignments(assignments.filter((a: any) => a._id !== assignment._id))
+    );
+  };
+
+  const fetchAssignments = async () => {
+    try {
+      console.log("here");
+      const assignments = await client.fetchAllCourseAssignments(cid as string);
+      dispatch(setAssignments(assignments));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, [cid]);
+
   return (
     <div id="wd-assignments-page">
       <AssignmentControls />
@@ -30,11 +56,8 @@ export default function Assignments() {
             </div>
             <ListGroup className="wd-assignment-list-content rounded-0">
               {assignments
-                .filter(
-                  (assignment) =>
-                    assignment.course === cid && assignment.group === group
-                )
-                .map((assignment) => (
+                .filter((assignment: any) => assignment.group === group)
+                .map((assignment: any) => (
                   <ListGroupItem
                     key={assignment._id}
                     className="wd-assignment-list-item p-3 ps-1 d-flex align-items-center"
@@ -55,7 +78,10 @@ export default function Assignments() {
                       </div>
                     </div>
                     <div className="wd-flex-gap" />
-                    <AssignmentControlButtons assignmentId={assignment._id} />
+                    <AssignmentControlButtons
+                      assignment={assignment}
+                      onDeleteAssignment={onDeleteAssignment}
+                    />
                   </ListGroupItem>
                 ))}
             </ListGroup>

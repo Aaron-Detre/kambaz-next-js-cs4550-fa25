@@ -17,14 +17,16 @@ import {
   Row,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { addAssignment, updateAssignment } from "../reducer";
+import { addAssignment, updateAssignment, setAssignments } from "../reducer";
 import { Assignment } from "../type";
+import * as client from "../../../client";
 
 export default function AssignmentEditor() {
-  const assignmentsPathname =
-    "/" + usePathname().split("/").splice(1, 3).join("/");
   const { cid, aid } = useParams();
   const { assignments } = useSelector((state: RootState) => state.assignments);
+  const dispatch: AppDispatch = useDispatch();
+  const assignmentsPathname =
+    "/" + usePathname().split("/").splice(1, 3).join("/");
   const baseAssignment: Assignment = {
     _id: "",
     title: "",
@@ -37,10 +39,8 @@ export default function AssignmentEditor() {
     group: "Assignments",
   };
   const [assignment, setAssignment] = useState<any>(
-    assignments.find((a) => a._id === aid) ?? baseAssignment
+    assignments.find((a: any) => a._id === aid) ?? baseAssignment
   );
-
-  const dispatch: AppDispatch = useDispatch();
 
   const updateTitle = (e: any) => {
     setAssignment({ ...assignment, title: e.target.value });
@@ -70,6 +70,25 @@ export default function AssignmentEditor() {
   };
   const updateAvailableUntilDate = (e: any) => {
     setAssignment({ ...assignment, until: e.target.value });
+  };
+
+  const onAddNewAssignment = async (assignment: any) => {
+    const newAssignment = await client.createAssignment(assignment);
+    dispatch(setAssignments([...assignments, newAssignment]));
+  };
+  const onUpdateAssignment = async (assignment: any) => {
+    await client.updateAssignment(assignment);
+    dispatch(
+      setAssignments(
+        assignments.map((a: any) => {
+          if (a._id === assignment._id) {
+            return assignment;
+          } else {
+            return a;
+          }
+        })
+      )
+    );
   };
 
   return (
@@ -277,11 +296,10 @@ export default function AssignmentEditor() {
                 type="button"
                 className="bg-danger rounded-1 wd-border-none"
                 onClick={() => {
-                  // dispatch(deleteAssignment(assignment._id));
                   if (assignment._id === "") {
-                    dispatch(addAssignment(assignment));
+                    onAddNewAssignment(assignment);
                   } else {
-                    dispatch(updateAssignment(assignment));
+                    onUpdateAssignment(assignment);
                   }
                 }}
               >

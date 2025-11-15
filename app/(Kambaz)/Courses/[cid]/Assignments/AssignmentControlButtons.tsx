@@ -1,17 +1,18 @@
 import { IoEllipsisVertical } from "react-icons/io5";
 import GreenCheckmark from "../GreenCheckmark";
 import { FaTrash } from "react-icons/fa6";
-import { deleteAssignment } from "./reducer";
-import { AppDispatch } from "@/app/(Kambaz)/store";
-import { useDispatch } from "react-redux";
+// import { deleteAssignment } from "./reducer";
+// import { AppDispatch } from "@/app/(Kambaz)/store";
+// import { useDispatch } from "react-redux";
 import { useState } from "react";
 import DeleteAssignmentDialog from "./DeleteAssignmentDialog";
 export default function AssignmentControlButtons({
-  assignmentId,
-}: Readonly<{ assignmentId: string }>) {
+  assignment,
+  onDeleteAssignment,
+}: Readonly<{ assignment: any; onDeleteAssignment: any }>) {
   const [showDialog, setShowDialog] = useState(false);
-  const dispatch: AppDispatch = useDispatch();
-  const del = () => dispatch(deleteAssignment(assignmentId));
+  // const dispatch: AppDispatch = useDispatch();
+  // const del = () => dispatch(deleteAssignment(assignmentId));
   const handleClose = () => setShowDialog(false);
   const handleShow = () => setShowDialog(true);
   return (
@@ -26,7 +27,7 @@ export default function AssignmentControlButtons({
         show={showDialog}
         handleClose={handleClose}
         dialogTitle="Delete Assignment"
-        deleteAssignment={del}
+        deleteAssignment={() => onDeleteAssignment(assignment)}
       />
     </div>
   );

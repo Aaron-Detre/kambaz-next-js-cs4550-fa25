@@ -12,7 +12,7 @@ export default function CoursesLayout({
   const { cid }: { cid: string } = useParams();
   const { courses } = useSelector((state: RootState) => state.courses);
   const { open } = useSelector((state: RootState) => state.breadcrumb);
-  const course = courses.find((course: any) => course._id === cid);
+  const course: any = courses.find((course: any) => course._id === cid);
 
   return (
     <div id="wd-courses">

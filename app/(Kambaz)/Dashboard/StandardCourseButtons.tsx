@@ -8,7 +8,8 @@ import { deleteCourseEnrollments } from "./reducer";
 export default function StandardCourseButtons({
   course,
   setCourse,
-}: Readonly<{ course: any; setCourse: any }>) {
+  onDeleteCourse,
+}: Readonly<{ course: any; setCourse: any; onDeleteCourse: any }>) {
   const dispatch: AppDispatch = useDispatch();
   return (
     <div className="d-flex align-items-center">
@@ -29,7 +30,7 @@ export default function StandardCourseButtons({
         onClick={(event) => {
           event.preventDefault();
           const courseId = course._id;
-          dispatch(deleteCourse(courseId));
+          onDeleteCourse(course._id);
           dispatch(deleteCourseEnrollments(courseId));
         }}
         className="btn btn-danger"

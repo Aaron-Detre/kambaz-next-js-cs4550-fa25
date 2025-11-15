@@ -10,6 +10,7 @@ export default function TOC() {
     { link: "/Labs/Lab2", label: "Lab2" },
     { link: "/Labs/Lab3", label: "Lab3" },
     { link: "/Labs/Lab4", label: "Lab4" },
+    { link: "/Labs/Lab5", label: "Lab5" },
     { link: "/", label: "Kambaz" },
     {
       link: "https://github.com/Aaron-Detre/kambaz-next-js-cs4550-fa25",

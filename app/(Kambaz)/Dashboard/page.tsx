@@ -14,18 +14,21 @@ import {
   FormLabel,
   Row,
 } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
-import { addNewCourse, updateCourse } from "../Courses/reducer";
+import { addNewCourse, updateCourse, setCourses } from "../Courses/reducer";
 import StandardCourseButtons from "./StandardCourseButtons";
 import EnrollmentsModeButtons from "./EnrollmentsModeButtons";
+import * as client from "../Courses/client";
+import { setEnrollments } from "./reducer";
 
 export default function Dashboard() {
   const { currentUser } = useSelector((state: RootState) => state.account);
   const { courses } = useSelector((state: RootState) => state.courses);
   const { enrollments } = useSelector((state: RootState) => state.enrollments);
   const dispatch: AppDispatch = useDispatch();
+  // const [numCourses, setNumCourses] = useState(0);
   const [course, setCourse] = useState<any>({
     _id: "0",
     name: "",
@@ -35,23 +38,99 @@ export default function Dashboard() {
     image: "react.png",
     description: "",
   });
+  const onAddNewCourse = async () => {
+    const newCourse = await client.createCourse(course);
+    const newEnrollment = await client.enrollUserInCourse(
+      currentUser._id,
+      newCourse._id
+    );
+    dispatch(setCourses([...courses, newCourse]));
+    dispatch(setEnrollments([...enrollments, newEnrollment]));
+  };
+  const onDeleteCourse = async (courseId: string) => {
+    const status = await client.deleteCourse(courseId);
+    dispatch(
+      setCourses(courses.filter((course: any) => course._id !== courseId))
+    );
+  };
+  const onUpdateCourse = async () => {
+    await client.updateCourse(course);
+    dispatch(
+      setCourses(
+        courses.map((c: any) => {
+          if (c._id === course._id) {
+            return course;
+          } else {
+            return c;
+          }
+        })
+      )
+    );
+  };
+
+  const fetchAllCourses = async () => {
+    try {
+      const displayCourses = await client.fetchAllCourses();
+      dispatch(setCourses(displayCourses));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // const fetchNumCourses = async () => {
+  //   try {
+  //     const displayCourses = await client.fetchAllCourses();
+  //     setNumCourses(displayCourses.length);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  const fetchMyCourses = async () => {
+    if (currentUser) {
+      try {
+        const displayCourses = await client.findMyCourses(currentUser._id);
+        dispatch(setCourses(displayCourses));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const onEnroll = async (cid: string) => {
+    const newEnrollment = await client.enrollUserInCourse(currentUser._id, cid);
+    dispatch(setEnrollments([...enrollments, newEnrollment]));
+  };
+  const onUnenroll = async (cid: string) => {
+    const status = await client.unenrollUserInCourse(currentUser._id, cid);
+    dispatch(
+      setEnrollments(
+        enrollments.filter(
+          (e) => e.user !== currentUser._id || e.course !== cid
+        )
+      )
+    );
+  };
+  const fetchEnrollments = async () => {
+    if (currentUser) {
+      const userEnrollments = await client.fetchUserEnrollments(
+        currentUser._id
+      );
+      dispatch(setEnrollments(userEnrollments));
+    }
+  };
+
+  useEffect(() => {
+    fetchMyCourses();
+    // fetchNumCourses();
+    fetchEnrollments();
+  }, [currentUser]);
 
   const [enrollmentsMode, setEnrollmentsMode] = useState(false);
-
-  const filterByEnrollment = (course: any) => {
-    return enrollmentsMode ? true : userIsEnrolled(course);
-  };
 
   const userIsEnrolled = (course: any) =>
     enrollments.some(
       (enrollment) =>
         enrollment.user === currentUser?._id && enrollment.course === course._id
     );
-
-  const numEnrollments = () =>
-    enrollments.filter(
-      (enrollment: any) => enrollment.user === currentUser?._id
-    ).length;
 
   const [openEditor, setOpenEditor] = useState(false);
 
@@ -64,7 +143,14 @@ export default function Dashboard() {
         <div className="wd-flex-gap" />
         <Button
           variant="primary"
-          onClick={() => setEnrollmentsMode(!enrollmentsMode)}
+          onClick={() => {
+            setEnrollmentsMode(!enrollmentsMode);
+            if (!enrollmentsMode) {
+              fetchAllCourses();
+            } else {
+              fetchMyCourses();
+            }
+          }}
           className="me-2"
         >
           Enrollments
@@ -81,13 +167,13 @@ export default function Dashboard() {
             <button
               className="btn btn-primary float-end"
               id="wd-add-new-course-click"
-              onClick={() => dispatch(addNewCourse(course))}
+              onClick={onAddNewCourse}
             >
               Add
             </button>
             <button
               className="btn btn-warning float-end me-2"
-              onClick={() => dispatch(updateCourse(course))}
+              onClick={onUpdateCourse}
               id="wd-update-course-click"
             >
               Update
@@ -119,13 +205,14 @@ export default function Dashboard() {
         </div>
       </Collapse>
       <h2 id="wd-dashboard-published">
-        Published Courses ({courses.length}) | Enrolled Courses (
-        {numEnrollments()})
+        {currentUser
+          ? `Enrolled Courses (${enrollments.length})`
+          : "Sign in to see your courses"}
       </h2>
       <hr />
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
-          {courses.filter(filterByEnrollment).map((dashboardCourse: any) => (
+          {courses.map((dashboardCourse: any) => (
             <Col
               key={dashboardCourse._id}
               className="wd-dashboard-course"
@@ -157,12 +244,15 @@ export default function Dashboard() {
                     {enrollmentsMode ? (
                       <EnrollmentsModeButtons
                         enrolled={userIsEnrolled(dashboardCourse)}
+                        onEnroll={onEnroll}
+                        onUnenroll={onUnenroll}
                         courseId={dashboardCourse._id}
                       />
                     ) : (
                       <StandardCourseButtons
                         course={dashboardCourse}
                         setCourse={setCourse}
+                        onDeleteCourse={onDeleteCourse}
                       />
                     )}
                   </CardBody>

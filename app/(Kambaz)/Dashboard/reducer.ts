@@ -40,6 +40,9 @@ const enrollmentsSlice = createSlice({
         (enrollment: any) => enrollment.course !== action.payload
       );
     },
+    setEnrollments: (state, { payload: enrollments }) => {
+      state.enrollments = enrollments;
+    },
   },
 });
 
@@ -47,5 +50,6 @@ export const {
   addUserEnrollment,
   deleteUserEnrollment,
   deleteCourseEnrollments,
+  setEnrollments,
 } = enrollmentsSlice.actions;
 export default enrollmentsSlice.reducer;

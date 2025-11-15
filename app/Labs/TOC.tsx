@@ -14,7 +14,12 @@ export default function TOC() {
     { link: "/", label: "Kambaz" },
     {
       link: "https://github.com/Aaron-Detre/kambaz-next-js-cs4550-fa25",
-      label: "GitHub",
+      label: "GitHub Client",
+      target: "_blank",
+    },
+    {
+      link: "https://github.com/Aaron-Detre/kambaz-node-server-app",
+      label: "GitHub Server",
       target: "_blank",
     },
   ];

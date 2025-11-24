@@ -6,12 +6,7 @@ import { RootState } from "../store";
 
 export default function AccountNavigation() {
   const { currentUser } = useSelector((state: RootState) => state.account);
-  const links = currentUser
-    ? [{ link: "Profile", label: "Profile" }]
-    : [
-        { link: "SignIn", label: "Sign In" },
-        { link: "SignUp", label: "Sign Up" },
-      ];
+  const links = getLinks(currentUser);
   const pathname = usePathname();
   return (
     <div id="wd-account-navigation" className="wd-list-group fs-5 rounded-0">
@@ -29,3 +24,23 @@ export default function AccountNavigation() {
     </div>
   );
 }
+
+type Link = { link: string; label: string };
+
+const getLinks = (currentUser: any): Link[] => {
+  if (currentUser) {
+    if (currentUser.role === "ADMIN") {
+      return [
+        { link: "Profile", label: "Profile" },
+        { link: "Users", label: "Users" },
+      ];
+    } else {
+      return [{ link: "Profile", label: "Profile" }];
+    }
+  } else {
+    return [
+      { link: "SignIn", label: "Sign In" },
+      { link: "SignUp", label: "Sign Up" },
+    ];
+  }
+};

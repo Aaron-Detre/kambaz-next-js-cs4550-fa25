@@ -40,7 +40,7 @@ export default function Dashboard() {
   });
   const onAddNewCourse = async () => {
     const newCourse = await client.createCourse(course);
-    const newEnrollment = await client.enrollUserInCourse(
+    const newEnrollment = await client.enrollIntoCourse(
       currentUser._id,
       newCourse._id
     );
@@ -96,11 +96,11 @@ export default function Dashboard() {
   };
 
   const onEnroll = async (cid: string) => {
-    const newEnrollment = await client.enrollUserInCourse(currentUser._id, cid);
+    const newEnrollment = await client.enrollIntoCourse(currentUser._id, cid);
     dispatch(setEnrollments([...enrollments, newEnrollment]));
   };
   const onUnenroll = async (cid: string) => {
-    const status = await client.unenrollUserInCourse(currentUser._id, cid);
+    const status = await client.unenrollFromCourse(currentUser._id, cid);
     dispatch(
       setEnrollments(
         enrollments.filter(

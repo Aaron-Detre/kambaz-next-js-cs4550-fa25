@@ -58,33 +58,44 @@ export default function Assignments() {
             <ListGroup className="wd-assignment-list-content rounded-0">
               {assignments
                 .filter((assignment: any) => assignment.group === group)
-                .map((assignment: any) => (
-                  <ListGroupItem
-                    key={assignment._id}
-                    className="wd-assignment-list-item p-3 ps-1 d-flex align-items-center"
-                  >
-                    <BsGripVertical className="me-2 fs-3" />
-                    <LuNotebookPen className="me-2 fs-3 text-success" />
-                    <div className="wd-assignment-list-item-content">
-                      <Link
-                        href={`/Courses/${cid}/Assignments/${assignment._id}`}
-                        className="wd-assignment-link text-decoration-none text-black"
-                      >
-                        {assignment.title}
-                      </Link>
-                      <div className="wd-assignment-info">
-                        <span className="text-danger">Multiple Modules</span> |{" "}
-                        <b>Not available until</b> {assignment.from} |{" "}
-                        <b>Due</b> {assignment.due} | {assignment.points} pts
+                .map(
+                  (assignment: {
+                    _id: string;
+                    title: string;
+                    course: string;
+                    description: string;
+                    points: number;
+                    due: string;
+                    from: string;
+                    until: string;
+                  }) => (
+                    <ListGroupItem
+                      key={assignment._id}
+                      className="wd-assignment-list-item p-3 ps-1 d-flex align-items-center"
+                    >
+                      <BsGripVertical className="me-2 fs-3" />
+                      <LuNotebookPen className="me-2 fs-3 text-success" />
+                      <div className="wd-assignment-list-item-content">
+                        <Link
+                          href={`/Courses/${cid}/Assignments/${assignment._id}`}
+                          className="wd-assignment-link text-decoration-none text-black"
+                        >
+                          {assignment.title}
+                        </Link>
+                        <div className="wd-assignment-info">
+                          <span className="text-danger">Multiple Modules</span>{" "}
+                          | <b>Not available until</b> {assignment.from} |{" "}
+                          <b>Due</b> {assignment.due} | {assignment.points} pts
+                        </div>
                       </div>
-                    </div>
-                    <div className="wd-flex-gap" />
-                    <AssignmentControlButtons
-                      assignment={assignment}
-                      onDeleteAssignment={onDeleteAssignment}
-                    />
-                  </ListGroupItem>
-                ))}
+                      <div className="wd-flex-gap" />
+                      <AssignmentControlButtons
+                        assignment={assignment}
+                        onDeleteAssignment={onDeleteAssignment}
+                      />
+                    </ListGroupItem>
+                  )
+                )}
             </ListGroup>
           </div>
         ))}

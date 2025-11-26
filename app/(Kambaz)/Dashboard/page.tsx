@@ -17,17 +17,23 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
-import { addNewCourse, updateCourse, setCourses } from "../Courses/reducer";
+// import { addNewCourse, updateCourse, setCourses } from "../Courses/reducer";
 import StandardCourseButtons from "./StandardCourseButtons";
 import EnrollmentsModeButtons from "./EnrollmentsModeButtons";
 import * as client from "../Courses/client";
-import { setEnrollments } from "./reducer";
+// import { setEnrollments } from "./reducer";
 
 export default function Dashboard() {
   const { currentUser } = useSelector((state: RootState) => state.account);
-  const { courses } = useSelector((state: RootState) => state.courses);
-  const { enrollments } = useSelector((state: RootState) => state.enrollments);
-  const dispatch: AppDispatch = useDispatch();
+  const [courses, setCourses] = useState<any[]>([]);
+  const [enrollments, setEnrollments] = useState<
+    { _id: string; user: string; course: string }[]
+  >([]);
+  // const { courses } = useSelector((state: RootState) => state.courses);
+  // const { enrollments } = useSelector((state: RootState) => state.enrollments);
+  // const [ courses, setCourses ] = useState([]);
+  // const [ enrollments, setEnrollments ] = useState([]);
+  // const dispatch: AppDispatch = useDispatch();
   // const [numCourses, setNumCourses] = useState(0)
   const [course, setCourse] = useState<any>({
     _id: "0",
@@ -38,90 +44,73 @@ export default function Dashboard() {
     image: "react.png",
     description: "",
   });
-  const onAddNewCourse = async () => {
+  const onAddNewCourse = async (): Promise<void> => {
     const newCourse = await client.createCourse(course);
     const newEnrollment = await client.enrollIntoCourse(
       currentUser._id,
       newCourse._id
     );
-    dispatch(setCourses([...courses, newCourse]));
-    dispatch(setEnrollments([...enrollments, newEnrollment]));
+    setCourses([...courses, newCourse]);
+    setEnrollments([...enrollments, newEnrollment]);
   };
-  const onDeleteCourse = async (courseId: string) => {
+  const onDeleteCourse = async (courseId: string): Promise<void> => {
     const status = await client.deleteCourse(courseId);
-    dispatch(
-      setCourses(courses.filter((course: any) => course._id !== courseId))
-    );
+    setCourses(courses.filter((course: any) => course._id !== courseId));
   };
-  const onUpdateCourse = async () => {
-    await client.updateCourse(course);
-    dispatch(
-      setCourses(
-        courses.map((c: any) => {
-          if (c._id === course._id) {
-            return course;
-          } else {
-            return c;
-          }
-        })
-      )
+  const onUpdateCourse = async (): Promise<void> => {
+    const status = await client.updateCourse(course);
+    setCourses(
+      courses.map((c: any) => {
+        if (c._id === course._id) {
+          return course;
+        } else {
+          return c;
+        }
+      })
     );
   };
 
-  const fetchAllCourses = async () => {
+  const fetchAllCourses = async (): Promise<void> => {
     try {
       const displayCourses = await client.fetchAllCourses();
-      dispatch(setCourses(displayCourses));
+      setCourses(displayCourses);
     } catch (error) {
       console.error(error);
     }
   };
-  // const fetchNumCourses = async () => {
-  //   try {
-  //     const displayCourses = await client.fetchAllCourses();
-  //     setNumCourses(displayCourses.length);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  const fetchMyCourses = async () => {
+  const fetchMyCourses = async (): Promise<void> => {
     if (currentUser) {
       try {
         const displayCourses = await client.findMyCourses(currentUser._id);
-        dispatch(setCourses(displayCourses));
+        setCourses(displayCourses);
       } catch (error) {
         console.error(error);
       }
     }
   };
 
-  const onEnroll = async (cid: string) => {
+  const onEnroll = async (cid: string): Promise<void> => {
     const newEnrollment = await client.enrollIntoCourse(currentUser._id, cid);
-    dispatch(setEnrollments([...enrollments, newEnrollment]));
+    setEnrollments([...enrollments, newEnrollment]);
   };
-  const onUnenroll = async (cid: string) => {
+  const onUnenroll = async (cid: string): Promise<void> => {
     const status = await client.unenrollFromCourse(currentUser._id, cid);
-    dispatch(
-      setEnrollments(
-        enrollments.filter(
-          (e) => e.user !== currentUser._id || e.course !== cid
-        )
-      )
+    setEnrollments(
+      enrollments.filter((e) => e.user !== currentUser._id || e.course !== cid)
     );
   };
-  const fetchEnrollments = async () => {
+  const fetchMyEnrollments = async (): Promise<void> => {
     if (currentUser) {
       const userEnrollments = await client.fetchUserEnrollments(
         currentUser._id
       );
-      dispatch(setEnrollments(userEnrollments));
+      setEnrollments(userEnrollments);
     }
   };
 
   useEffect(() => {
     fetchMyCourses();
-    // fetchNumCourses();
-    fetchEnrollments();
+    fetchMyEnrollments();
   }, [currentUser]);
 
   const [enrollmentsMode, setEnrollmentsMode] = useState(false);
@@ -131,7 +120,6 @@ export default function Dashboard() {
       (enrollment) =>
         enrollment.user === currentUser?._id && enrollment.course === course._id
     );
-
   const [openEditor, setOpenEditor] = useState(false);
 
   return (

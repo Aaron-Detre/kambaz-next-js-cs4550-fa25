@@ -16,7 +16,7 @@ export default function CoursesLayout({
 
   return (
     <div id="wd-courses">
-      <Breadcrumb courseName={course?.name ?? ""} />
+      <Breadcrumb />
       <hr />
       <div className="d-flex">
         {open && (

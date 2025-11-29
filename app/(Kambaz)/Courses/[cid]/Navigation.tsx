@@ -5,14 +5,14 @@ import { ListGroup, ListGroupItem } from "react-bootstrap";
 export default function CourseNavigation({ cid }: Readonly<{ cid: string }>) {
   const pathname = usePathname();
   const links = [
-    { label: "Home", path: "Home" },
-    { label: "Modules", path: "Modules" },
-    { label: "Piazza", path: "Piazza" },
-    { label: "Zoom", path: "Zoom" },
-    { label: "Assignments", path: "Assignments" },
-    { label: "Quizzes", path: "Quizzes" },
-    { label: "Grades", path: "Grades" },
-    { label: "People", path: "People/Table" },
+    "Home",
+    "Modules",
+    "Piazza",
+    "Zoom",
+    "Assignments",
+    "Quizzes",
+    "Grades",
+    "People",
   ];
   return (
     <ListGroup
@@ -22,16 +22,14 @@ export default function CourseNavigation({ cid }: Readonly<{ cid: string }>) {
     >
       {links.map((link) => (
         <ListGroupItem
-          key={link.label}
+          key={link}
           className={`border-0 bg-white ${
-            pathname.includes(link.label)
-              ? "wd-active text-black"
-              : "text-danger"
+            pathname.includes(link) ? "wd-active text-black" : "text-danger"
           }`}
           as={Link}
-          href={`/Courses/${cid}/${link.path}`}
+          href={`/Courses/${cid}/${link}`}
         >
-          {link.label}
+          {link}
         </ListGroupItem>
       ))}
     </ListGroup>

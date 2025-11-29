@@ -54,8 +54,12 @@ export default function Dashboard() {
     setEnrollments([...enrollments, newEnrollment]);
   };
   const onDeleteCourse = async (courseId: string): Promise<void> => {
-    const status = await client.deleteCourse(courseId);
+    await client.deleteCourse(courseId);
+    await client.unenrollAllFromCourse(courseId);
     setCourses(courses.filter((course: any) => course._id !== courseId));
+    setEnrollments(
+      enrollments.filter((enrollment: any) => enrollment.course !== courseId)
+    );
   };
   const onUpdateCourse = async (): Promise<void> => {
     const status = await client.updateCourse(course);
@@ -126,8 +130,6 @@ export default function Dashboard() {
     <div id="wd-dashboard">
       <div className="d-flex align-items-center">
         <h1 id="wd-dashboard-title">Dashboard</h1>
-        {!currentUser &&
-          ">>>sign in with username: 'test', password: 'test' to access courses"}
         <div className="wd-flex-gap" />
         <Button
           variant="primary"
@@ -141,7 +143,7 @@ export default function Dashboard() {
           }}
           className="me-2"
         >
-          Enrollments
+          {enrollmentsMode ? "My Courses" : "All Courses"}
         </Button>
         <Button variant="success" onClick={() => setOpenEditor(!openEditor)}>
           Course Editor

@@ -9,7 +9,20 @@ import { redirect } from "next/navigation";
 import * as client from "../client";
 
 export default function SignUp() {
-  const [user, setUser] = useState<any>({});
+  const [user, setUser] = useState<any>({
+    _id: "",
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    dob: "",
+    role: "USER",
+    loginId: "",
+    section: "",
+    lastActivity: "",
+    totalActivity: "",
+  });
   const dispatch = useDispatch();
   const signup = async () => {
     const currentUser = await client.signup(user);

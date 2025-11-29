@@ -6,18 +6,17 @@ import { FaAlignJustify } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { toggle } from "./reducer";
 
-export default function Breadcrumb({
-  courseName,
-}: Readonly<{ courseName: string }>) {
-  const pathname = usePathname();
+export default function Breadcrumb() {
+  const pathTokens = usePathname().split("/");
   const dispatch: AppDispatch = useDispatch();
+
   return (
     <h2 className="text-danger">
       <FaAlignJustify
         className="me-4 fs-4 mb-1"
         onClick={() => dispatch(toggle())}
       />
-      {`${courseName} > ${pathname.split("/").at(3)}`}
+      {`${pathTokens.at(2)} > ${pathTokens.at(3)}`}
     </h2>
   );
 }

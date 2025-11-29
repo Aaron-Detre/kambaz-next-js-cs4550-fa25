@@ -30,7 +30,6 @@ export default function Assignments() {
 
   const fetchAssignments = async () => {
     try {
-      console.log("here");
       const assignments = await client.fetchAllCourseAssignments(cid as string);
       dispatch(setAssignments(assignments));
     } catch (error) {
